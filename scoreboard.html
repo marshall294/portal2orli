@@ -11,21 +11,50 @@
       padding: 0;
       box-sizing: border-box;
     }
-    header {
+
+    /* First Fixed Header: Score Description */
+    .score-description {
       position: fixed;
       top: 0;
+      left: 0;
       width: 100%;
-      background-color: #333;
-      color: #fff;
+      background-color: #007BFF; /* Blue background */
+      color: white;
+      text-align: center;
+      padding: 5px 0;
+      font-size: 0.9rem;
+      z-index: 1000; /* Stays on top of content */
+      margin-bottom: 10px; /* Adds space below the description header */
+    }
+    .score-description p {
+      margin: 0;
+    }
+
+    /* Second Fixed Header: Total Scores */
+    header {
+      position: fixed;
+      top: 70px; /* Below the score description header */
+      left: 0;
+      width: 100%;
+      background-color: #343A40; /* Dark background for total scores */
+      color: white;
       text-align: center;
       padding: 10px 0;
-      font-size: 1.2rem;
-      z-index: 1000;
+      font-size: 1.4rem;
+      z-index: 999; /* Just below the description header */
+      margin-bottom: 10px; /* Adds space below the total score header */
     }
+
+    header div {
+      margin: 5px 0;
+    }
+
+    /* Main Content */
     main {
-      margin-top: 80px;
+      margin-top: 140px; /* Space for both headers */
       padding: 20px;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -47,6 +76,13 @@
   </style>
 </head>
 <body>
+
+  <!-- Fixed Description Header -->
+  <div class="score-description">
+    <p>Scores are updated in real-time. Points for positions: 1st - 10 points, 2nd - 7 points, 3rd - 5 points, 4th - 3 points. Below are the accumulated points for each team.</p>
+  </div>
+
+  <!-- Fixed Total Scores Header -->
   <header>
     <div>Total Score</div>
     <div>
@@ -56,10 +92,15 @@
       Jade: <span id="score-jade">0</span>
     </div>
   </header>
-  
+
+  <!-- Main Content -->
   <main id="events-container">
     <!-- Event tables will be populated here in view-only mode -->
   </main>
+
+
+
+
   
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
