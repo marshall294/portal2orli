@@ -98,10 +98,6 @@
     <!-- Event tables will be populated here in view-only mode -->
   </main>
 
-
-
-
-  
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
   <script>
@@ -144,28 +140,26 @@
             </tr>
             <tr>
               <th>Team</th>
-              <th>Contestant Name</th>
-              <th>Position</th>
+              <th>Representative</th>
+              <th>Score</th>
             </tr>
           </thead>
         `;
 
         let tableBody = "<tbody>";
         houseColors.forEach((house, index) => {
-          const houseData = eventData.houses[house] || { name: "", position: 0 };
-          let posDisplay = "Not set";
-          if (houseData.position >= 1 && houseData.position <= 4) {
-            posDisplay = houseData.position;
-            if (houseData.position === 1) posDisplay += "st";
-            else if (houseData.position === 2) posDisplay += "nd";
-            else if (houseData.position === 3) posDisplay += "rd";
-            else posDisplay += "th";
-          }
+          const houseData = eventData.houses[house] || { name: "", score: 0 };
+          let scoreDisplay = "Not set";
+          if (houseData.score === 10) scoreDisplay = "10";
+          else if (houseData.score === 7) scoreDisplay = "7";
+          else if (houseData.score === 5) scoreDisplay = "5";
+          else if (houseData.score === 3) scoreDisplay = "3";
+          
           tableBody += `
             <tr class="${houseClasses[index]}">
               <td>${house}</td>
               <td>${houseData.name}</td>
-              <td>${posDisplay}</td>
+              <td>${scoreDisplay}</td>
             </tr>
           `;
         });
