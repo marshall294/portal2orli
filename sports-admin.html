@@ -75,12 +75,18 @@
     firebase.initializeApp(firebaseConfig);
     var database = firebase.database();
 
-    const eventNames = [
-      "Filling the Bottle", "Picking the Balls", "Sack Race", "Egg and Spoon Race", 
-      "Relay Race", "Three-Legged Race", "Obstacle Course", "Tug of War", 
-      "High Jump", "Long Jump", "100m Sprint", "200m Sprint", "400m Race", 
-      "Shot Put", "Discus Throw", "Testing", "Testing 2"
-    ];
+const eventNames = [
+  "Picking the Balls Pre-Nursery", "Picking the Balls Nursery 1", "Picking the Balls Nursery 2",
+  "Sprint Pre-Nursery", "Sprint Nursery 1", "Sprint Nursery 2",
+  "Filling the Bottle Nursery 1", "Filling the Bottle Nursery 2",
+  "Colour Sorting Year 1", "Mat and Grass Pre-Nursery",
+  "Mat and Grass Nursery 1", "Mat and Grass Nursery 2", "Mat and Grass Junior Boys",
+  "Mat and Grass Junior Girls", "Mat and Grass Senior Boys", "Mat and Grass Senior Girls",
+  "Sack Race Junior Boys", "Sack Race Junior Girls", "Sack Race Senior Boys", "Sack Race Senior Girls",
+  "Sprint Junior Boys", "Sprint Junior Girls", "Sprint Senior Boys", "Sprint Senior Girls",
+  "Egg Race Junior Boys", "Egg Race Junior Girls", "Egg Race Senior Boys", "Egg Race Senior Girls"
+];
+
 
     const houseColors = ["Coral", "Jasper", "Orli", "Jade"];
     const houseClasses = ["coral-row", "jasper-row", "orli-row", "jade-row"];
