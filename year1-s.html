@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -120,16 +121,32 @@
         }
 
         .button {
-            width: 150px;
-            height: 150px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            background-color: #FFB74D;
+            background-color: #00FFFF;
             display: flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            font-size: 1.5em;
-            color: #4CAF50;
+            font-size: 1.0em;
+            color: black;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Ensures horizontal text alignment */
+            line-height: 1.2; /* Fine-tuning vertical alignment */
+        }
+        .button2 {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: blue;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.3em;
+            color: black;
             transition: transform 0.3s ease;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center; /* Ensures horizontal text alignment */
@@ -176,14 +193,17 @@
     </div>
 
     <div class="buttons-container">
-        <a href="year1-first-term-student-dashboard.html" class="button" target="_blank">
+        <a href="year1-first-term-teacher-dashboard.html" class="button" target="_blank">
             FIRST TERM
         </a>
-        <a href="year1-second-term-student-dashboard.html" class="button" target="_blank">
+        <a href="year1-second-term-teacher-dashboard.html" class="button" target="_blank">
             SECOND TERM
         </a>
-        <a href="year1-third-term-student-dashboard.html" class="button" target="_blank">
+        <a href="year1-third-term-teacher-dashboard.html" class="button" target="_blank">
             THIRD TERM
+        </a>
+        <a href="https://meet.google.com/hya-brnf-cet" class="button2" target="_blank">
+            LIVE CLASS
         </a>
     </div>
 
@@ -193,3 +213,4 @@
 </body>
 
 </html>
+<script async data-explicit-opt-in="true" data-cookie-opt-in="true" src="https://vercel.live/_next-live/feedback/feedback.js"></script>
