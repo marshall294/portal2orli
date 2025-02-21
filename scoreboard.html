@@ -40,7 +40,7 @@
       color: white;
       text-align: center;
       padding: 10px 0;
-      font-size: 1.15rem;
+      font-size: 1.4rem;
       z-index: 999; /* Just below the description header */
       margin-bottom: 10px; /* Adds space below the total score header */
     }
@@ -85,12 +85,8 @@
   <!-- Fixed Total Scores Header -->
   <header>
     <div>Total Score</div>
-    <div>
-      Coral: <span id="score-coral">0</span> | 
-      Jasper: <span id="score-jasper">0</span> | 
-      Orli: <span id="score-orli">0</span> | 
-      Jade: <span id="score-jade">0</span>
-    </div>
+    <!-- The teams will be listed here in descending order by score -->
+    <div id="total-scores">Coral: 0 | Jasper: 0 | Orli: 0 | Jade: 0</div>
   </header>
 
   <!-- Main Content -->
@@ -101,74 +97,85 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
   <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyCNQbqTQvKwrtpbGXHgu56hbAVaKgIQ7nc",
-    authDomain: "mathcloud-72a42.firebaseapp.com",
-    projectId: "mathcloud-72a42",
-    storageBucket: "mathcloud-72a42.firebasestorage.app",
-    messagingSenderId: "123322117435",
-    appId: "1:123322117435:web:ff3d2ac5c9dedc1a439b1e"
-  };
-  firebase.initializeApp(firebaseConfig);
-  var database = firebase.database();
+    // Firebase configuration and initialization
+    const firebaseConfig = {
+      apiKey: "AIzaSyCNQbqTQvKwrtpbGXHgu56hbAVaKgIQ7nc",
+      authDomain: "mathcloud-72a42.firebaseapp.com",
+      projectId: "mathcloud-72a42",
+      storageBucket: "mathcloud-72a42.firebasestorage.app",
+      messagingSenderId: "123322117435",
+      appId: "1:123322117435:web:ff3d2ac5c9dedc1a439b1e"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var database = firebase.database();
 
-  const houseColors = ["Coral", "Jasper", "Orli", "Jade"];
-  const houseClasses = ["coral-row", "jasper-row", "orli-row", "jade-row"];
+    const houseColors = ["Coral", "Jasper", "Orli", "Jade"];
+    const houseClasses = ["coral-row", "jasper-row", "orli-row", "jade-row"];
+    const eventsContainer = document.getElementById("events-container");
 
-  const eventsContainer = document.getElementById("events-container");
+    database.ref("/").on("value", (snapshot) => {
+      const data = snapshot.val();
+      if (!data) return;
 
-  database.ref("/").on("value", (snapshot) => {
-    const data = snapshot.val();
-    if (!data) return;
+      // Update total scores dynamically with the highest score first
+      const scoresData = data.scores || { Coral: 0, Jasper: 0, Orli: 0, Jade: 0 };
+      const scoresArr = [
+        { team: "Coral", score: scoresData.Coral },
+        { team: "Jasper", score: scoresData.Jasper },
+        { team: "Orli", score: scoresData.Orli },
+        { team: "Jade", score: scoresData.Jade }
+      ];
+      // Sort in descending order
+      scoresArr.sort((a, b) => b.score - a.score);
+      // Create the header HTML with dynamic spans (which are re-created on each update)
+      let scoresHTML = scoresArr.map(item => {
+        return `${item.team}: <span id="score-${item.team.toLowerCase()}">${item.score}</span>`;
+      }).join(" | ");
+      document.getElementById("total-scores").innerHTML = scoresHTML;
 
-    document.getElementById("score-coral").textContent = data.scores ? data.scores.Coral : 0;
-    document.getElementById("score-jasper").textContent = data.scores ? data.scores.Jasper : 0;
-    document.getElementById("score-orli").textContent = data.scores ? data.scores.Orli : 0;
-    document.getElementById("score-jade").textContent = data.scores ? data.scores.Jade : 0;
+      // Update events table
+      eventsContainer.innerHTML = "";
+      if (data.events) {
+        Object.keys(data.events).forEach((eventIndex) => {
+          const eventData = data.events[eventIndex];
+          const table = document.createElement("table");
 
-    eventsContainer.innerHTML = "";
-
-    if (data.events) {
-      Object.keys(data.events).forEach((eventIndex) => {
-        const eventData = data.events[eventIndex];
-        const table = document.createElement("table");
-
-        let tableHeader = `
-          <thead>
-            <tr>
-              <th colspan="3">${eventData.eventName}</th>
-            </tr>
-            <tr>
-              <th>Team</th>
-              <th>Representative</th>
-              <th>Score</th>
-            </tr>
-          </thead>
-        `;
-
-        let tableBody = "<tbody>";
-        houseColors.forEach((house, index) => {
-          const houseData = eventData.houses[house] || { name: "", score: 0 };
-          let scoreDisplay = "Not set";
-          if (houseData.score === 10) scoreDisplay = "10";
-          else if (houseData.score === 7) scoreDisplay = "7";
-          else if (houseData.score === 5) scoreDisplay = "5";
-          else if (houseData.score === 3) scoreDisplay = "3";
-          
-          tableBody += `
-            <tr class="${houseClasses[index]}">
-              <td>${house}</td>
-              <td>${houseData.name}</td>
-              <td>${scoreDisplay}</td>
-            </tr>
+          let tableHeader = `
+            <thead>
+              <tr>
+                <th colspan="3">${eventData.eventName}</th>
+              </tr>
+              <tr>
+                <th>Team</th>
+                <th>Representative</th>
+                <th>Score</th>
+              </tr>
+            </thead>
           `;
+
+          let tableBody = "<tbody>";
+          houseColors.forEach((house, index) => {
+            const houseData = eventData.houses[house] || { name: "", score: 0 };
+            let scoreDisplay = "Not set";
+            if (houseData.score === 10) scoreDisplay = "10";
+            else if (houseData.score === 7) scoreDisplay = "7";
+            else if (houseData.score === 5) scoreDisplay = "5";
+            else if (houseData.score === 3) scoreDisplay = "3";
+            
+            tableBody += `
+              <tr class="${houseClasses[index]}">
+                <td>${house}</td>
+                <td>${houseData.name}</td>
+                <td>${scoreDisplay}</td>
+              </tr>
+            `;
+          });
+          tableBody += "</tbody>";
+          table.innerHTML = tableHeader + tableBody;
+          eventsContainer.appendChild(table);
         });
-        tableBody += "</tbody>";
-        table.innerHTML = tableHeader + tableBody;
-        eventsContainer.appendChild(table);
-      });
-    }
-  });
+      }
+    });
   </script>
 </body>
 </html>
