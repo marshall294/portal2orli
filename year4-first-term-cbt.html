@@ -668,23 +668,18 @@ function displayQuestions(questions, assessmentId) {
     };
 }
 
-// Delete a question from Firebase
-function deleteQuestion(index, assessmentId) {
-    if (confirm('Are you sure you want to delete this question?')) {
-        db.ref('assessments').child(assessmentId).child('questions').once('value').then((snapshot) => {
-            const questions = snapshot.val();
-            questions.splice(index, 1); // Remove the question at the specified index
-            db.ref('assessments').child(assessmentId).child('questions').set(questions, (error) => {
+    // Delete an assessment from Firebase
+    function deleteAssessmentFromDB(assessmentId) {
+        if (confirm('Are you sure you want to delete this assessment?')) {
+            db.ref('assessments').child(assessmentId).remove((error) => {
                 if (error) {
-                    alert('Error deleting question from Firebase');
+                    alert('Error deleting assessment');
                 } else {
-                    alert('Question deleted successfully!');
-                    displayQuestions(questions, assessmentId); // Refresh the displayed questions
+                    alert('Assessment deleted successfully!');
                 }
             });
-        });
+        }
     }
-}
 
 
 // Initialize the page by displaying all assessments
